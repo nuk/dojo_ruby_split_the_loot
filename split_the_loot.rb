@@ -46,6 +46,10 @@ class SplitTheLoot
 				gem = treasure.delete_at(0)
 				bucket_sum += gem
 				result[pirate_index] << gem
+				if (bucket_sum > @sum/@number_of_pirates) 
+					bucket_sum -= gem
+					treasure << result[pirate_index].pop
+				end
 			end
 			split_rec (treasure, pirate_index+1, result)
 		end	

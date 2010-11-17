@@ -1,5 +1,16 @@
 require "split_the_loot"
 
+class Array
+	def sum
+		sum = 0
+		each do |g|
+			sum += g
+		end
+		sum
+	end
+end
+
+
 describe "SplitTheLoot" do
 
 	before :each do
@@ -32,9 +43,11 @@ describe "SplitTheLoot" do
 	it "should distribuite two gems to each pirate" do
 		@splitter.split([2,1,2,1],2).should == [[2,1],[2,1]]
 	end
-	
+		
 	it "should distribuite two gems to each pirate in desc order" do
-		@splitter.split([2,2,1,1],2).should == [[2,1],[2,1]]
+		@splitter.split([2,2,1,1],2).each do |bucket| 
+			bucket.sum.should == 3
+		end		
 	end
 
 end
