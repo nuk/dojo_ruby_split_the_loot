@@ -32,20 +32,19 @@ class SplitTheLoot
 			result << []	
 		end
 		
-		split_rec(treasure, number_of_pirates, 0, 0,result)
+		split_rec(treasure, number_of_pirates, 0, result)
 				
 		return result
 	end
 	
-	def split_rec (treasure, number_of_pirates, pirate_index, treasure_index, result)
+	def split_rec (treasure, number_of_pirates, pirate_index, result)
 		if(pirate_index < number_of_pirates)
-			i = 0
-			while (i < @sum/number_of_pirates )
-				result[pirate_index] << treasure[treasure_index]
-				i+=treasure[treasure_index]
-				treasure_index+=1
+			bucket_sum = 0
+			while (bucket_sum < @sum/number_of_pirates )
+				bucket_sum+=treasure[0]
+				result[pirate_index] << treasure.delete_at(0)
 			end
-			split_rec (treasure, number_of_pirates, pirate_index+1, treasure_index, result)			
+			split_rec (treasure, number_of_pirates, pirate_index+1, result)			
 		end	
 	end
 end
