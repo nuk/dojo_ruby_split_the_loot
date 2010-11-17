@@ -28,5 +28,13 @@ describe "SplitTheLoot" do
 	it "should distribuite one gem to each pirate" do
 		@splitter.split([2,2],2).should == [[2],[2]]
 	end
+	
+	it "should distribuite two gems to each pirate" do
+		@splitter.split([2,1,2,1],2).should == [[2,1],[2,1]]
+	end
+	
+	it "should distribuite two gems to each pirate in desc order" do
+		@splitter.split([2,2,1,1],2).should == [[2,1],[2,1]]
+	end
 
 end
