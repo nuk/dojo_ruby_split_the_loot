@@ -47,17 +47,25 @@ describe "SplitTheLoot" do
 
 	end
 		
-	it "should distribuite two gems to each pirate in desc order" do
+	it "should distribute two gems to each pirate in desc order" do
 		@splitter.split([2,2,1,1],2).each do |bucket| 
 			bucket.sum.should == 3
 		end		
 	end
 
-	it "should distribuite different number of gems" do
+	it "should distribute different number of gems" do
 		@splitter.split([1,6,3,2],2).each do |bucket| 
 			bucket.sum.should == 6
 		end		
 	end
+	
+	it "should distribute when the next gem is not a good choice" do
+		@splitter.split([8,1, 8,2 ,2,9],3).each do |bucket| 
+			bucket.sum.should == 10
+		end		
+	end
+	
+	 
 	
 	it "should not distribuite the undistribuitable" do
 		@splitter.split([8,2],2).should == nil

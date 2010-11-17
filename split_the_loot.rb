@@ -53,7 +53,6 @@ class SplitTheLoot
 					bucket_sum += gem
 					result[pirate_index] << gem					
 				end
-
 			end
 			return split_rec(treasure, pirate_index+1, result)
 		end	
