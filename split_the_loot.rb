@@ -28,30 +28,35 @@ class SplitTheLoot
 		unless validate(treasure)  
 			return nil
 		end
-				
+		@pirate_share = @sum/@number_of_pirates		
 		result = []
 		@number_of_pirates.times do |i|
 			result << []	
 		end
 		
 		
-		split_rec(treasure, 0, result)
-		return result
+		return split_rec(treasure, 0, result)
 	end
 	
 	def split_rec (treasure, pirate_index, result)
 		if(pirate_index < @number_of_pirates)
 			bucket_sum = 0
-			while (bucket_sum < @sum/@number_of_pirates )
-				gem = treasure.delete_at(0)
-				bucket_sum += gem
-				result[pirate_index] << gem
-				if (bucket_sum > @sum/@number_of_pirates) 
-					bucket_sum -= gem
-					treasure << result[pirate_index].pop
+			chosen_gem = 0;
+			while (bucket_sum < @pirate_share )
+				if(chosen_gem == treasure.size)
+					return nil
 				end
+				if(treasure[chosen_gem]+bucket_sum > @pirate_share)
+					chosen_gem += 1
+				else
+					gem = treasure.delete_at(chosen_gem)
+					bucket_sum += gem
+					result[pirate_index] << gem					
+				end
+
 			end
-			split_rec (treasure, pirate_index+1, result)
+			return split_rec(treasure, pirate_index+1, result)
 		end	
+		return result
 	end
 end
