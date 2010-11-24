@@ -1,3 +1,14 @@
+class Array
+	def sum
+		sum = 0
+		each do |g|
+			sum += g
+		end
+		sum
+	end
+end
+
+
 class SplitTheLoot
 
 	def validate (treasure) 
@@ -17,7 +28,6 @@ class SplitTheLoot
 	end
 
 	def split (treasure, number_of_pirates)
-
 		@number_of_pirates = number_of_pirates
 				
 		@sum = 0
@@ -40,36 +50,34 @@ class SplitTheLoot
 	
 	def split_rec (treasure, pirate_index, result)
 		if(pirate_index < @number_of_pirates)
-			bucket_sum = 0
 			chosen_gem = 0
-			last_selected_gem_value = 0
-			while (bucket_sum < @pirate_share )
+			bad_choices_tries = 0
+
+			while (result[pirate_index].sum < @pirate_share )
 				if(chosen_gem == treasure.size)
-					if (last_selected_gem_value != 0)
-						puts "> #{last_selected_gem_value}"
-						bucket_sum = bucket_sum - last_selected_gem_value
-						result[pirate_index].delete_at(-1)
+					unless (result[pirate_index].empty?)
+						if(bad_choices_tries == treasure.size)
+							return nil
+						end
 						
-						treasure.insert(0,last_selected_gem_value)
-						chosen_gem = 1
-						last_selected_gem_value = 0
+						bad_choices_tries += 1
+						treasure.insert(-1,result[pirate_index].delete_at(-1))
+						chosen_gem = 0
 						
-						puts "#{bucket_sum} : #{pirate_index} : #{treasure.inspect} : #{result[pirate_index].inspect}"
 					else
 						return nil
 					end
 				end
-				if(treasure[chosen_gem]+bucket_sum > @pirate_share)
+				if(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
 					chosen_gem += 1
 				else
-					gem = treasure.delete_at(chosen_gem)
-					bucket_sum += gem
-					result[pirate_index] << gem					
-					last_selected_gem_value = gem
+					result[pirate_index] << treasure.delete_at(chosen_gem)
 				end
 			end
+
 			return split_rec(treasure, pirate_index+1, result)
 		end	
+	
 		return result
 	end
 end
