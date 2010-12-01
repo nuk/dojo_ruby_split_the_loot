@@ -58,16 +58,16 @@ class SplitTheLoot
 		bad_choices_tries = 0
 		while (result[pirate_index].sum < @pirate_share )
 			if(chosen_gem == treasure.size)
-				unless (result[pirate_index].empty?)
+				#unless (result[pirate_index].empty?)
 					if(bad_choices_tries == treasure.size)
 						return false
 					end
 					bad_choices_tries += 1
 					treasure.insert(-1,result[pirate_index].delete_at(-1))
 					chosen_gem = 0
-				else
-					return false
-				end
+				#else
+				#	return false
+				#end
 			end
 			if(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
 				chosen_gem += 1
