@@ -56,24 +56,26 @@ class SplitTheLoot
 	def split_for_pirate (treasure, pirate_index, result)
 		chosen_gem = 0
 		bad_choices_tries = 0
+		
+		#ateh encher o balde
 		while (result[pirate_index].sum < @pirate_share )
+		
+			# volta atras
 			if(chosen_gem == treasure.size)
-				#unless (result[pirate_index].empty?)
-					if(bad_choices_tries == treasure.size)
-						return false
-					end
-					bad_choices_tries += 1
-					treasure.insert(-1,result[pirate_index].delete_at(-1))
-					chosen_gem = 0
-				#else
-				#	return false
-				#end
+				return false
 			end
+			
+			
 			if(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
+				#essa gema naum serve
 				chosen_gem += 1
+				
 			else
+				# achei uma gema que pode servir
 				result[pirate_index] << treasure.delete_at(chosen_gem)
 			end
+			
+			
 		end
 		return true
 	end
