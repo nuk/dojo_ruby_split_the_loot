@@ -43,6 +43,10 @@ class SplitTheLoot
 		@number_of_pirates.times do |i|
 			result << []	
 		end
+
+		if(treasure.empty?)
+			return result
+		end
 		
 		@number_of_pirates.times do |i|
 			unless split_for_pirate(treasure, i, result)
@@ -54,29 +58,26 @@ class SplitTheLoot
 	end
 	
 	def split_for_pirate (treasure, pirate_index, result)
-		chosen_gem = 0
-		bad_choices_tries = 0
-		
-		if(treasure.empty?)
-			result << []
-			return true
+		chosen_gem = chose_gem (treasure, pirate_index, result)
+		if chosen_gem.nil?
+			return false
 		end
-		
-		while(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
-			chosen_gem += 1
-
-			if(chosen_gem == treasure.size)
-				return false
-			end
-		end
-		
 		result[pirate_index] << treasure.delete_at(chosen_gem)
-		
-		
 		if(result[pirate_index].sum == @pirate_share)
 			return true
 		else		
 			return split_for_pirate(treasure, pirate_index, result)
 		end
 	end
+	
+	def chose_gem (treasure, pirate_index, result)
+		chosen_gem = 0
+		while(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
+			chosen_gem += 1
+			if(chosen_gem == treasure.size)
+				return nil
+			end
+		end
+		return chosen_gem
+	end 
 end
