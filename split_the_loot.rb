@@ -58,26 +58,48 @@ class SplitTheLoot
 	end
 	
 	def split_for_pirate (treasure, pirate_index, result)
-		chosen_gem = chose_gem (treasure, pirate_index, result)
-		if chosen_gem.nil?
-			return false
-		end
-		result[pirate_index] << treasure.delete_at(chosen_gem)
-		if(result[pirate_index].sum == @pirate_share)
-			return true
-		else		
-			return split_for_pirate(treasure, pirate_index, result)
-		end
-	end
 	
-	def chose_gem (treasure, pirate_index, result)
-		chosen_gem = 0
-		while(treasure[chosen_gem]+result[pirate_index].sum > @pirate_share)
-			chosen_gem += 1
-			if(chosen_gem == treasure.size)
-				return nil
+		banned_gems = []
+	
+		while(!treasure.empty?)
+			next_gem = treasure.delete_at(0)
+			if(next_gem + result[pirate_index].sum <= @pirate_share)
+				result[pirate_index] << next_gem
+				
+				if(result[pirate_index].sum == @pirate_share)
+					return true
+				else
+			
+					another_treasure = treasure.clone
+				
+					banned_gems.each do |a|
+						another_treasure << a
+					end
+				
+					another_result = []
+					result.each do |a|
+						another_result << a.clone 
+					end				
+								
+					if split_for_pirate(another_treasure, pirate_index, another_result)
+						result.clear
+					
+						another_result.each do |a|
+							result << a
+						end
+					
+						return true
+					else
+						banned_gems << result[pirate_index].delete_at(-1)
+					end
+				end
+
+			else
+				banned_gems << next_gem
 			end
+			
 		end
-		return chosen_gem
-	end 
+		
+		return false		
+	end
 end
