@@ -1,4 +1,4 @@
-require "split_the_loot"
+require "./split_the_loot"
 
 describe "SplitTheLoot" do
 
@@ -75,5 +75,9 @@ describe "SplitTheLoot" do
 	
 	it "should not distribute the undistribuitable" do
 		@splitter.split([8,2],2).should == nil
+	end
+
+	it "should work for a fucking example" do
+		@splitter.split([3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2],3).should == [[3, 2, 2, 2],[3, 2, 2, 2],[3, 2, 2, 2]]
 	end
 end
